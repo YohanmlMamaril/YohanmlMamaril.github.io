@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODA</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #222; color: #fff; margin: 0; }
+        .container { max-width: 400px; margin: 40px auto; padding: 20px; background: #333; border-radius: 10px; box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); }
+        h1 { font-size: 28px; color: #ddd; }
+        #clock { font-size: 36px; font-weight: bold; margin-bottom: 10px; }
+        input, button { width: 100%; padding: 12px; margin-top: 10px; font-size: 18px; border: 1px solid #444; border-radius: 5px; background: #555; color: white; }
+        button { background: #666; cursor: pointer; }
+        button:hover { background: #777; }
+        .task { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #444; font-size: 20px; }
+        .task input { width: 28px; height: 28px; margin-right: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PRODA</h1>
+    <div id="clock">00:00:00</div>
+    
+    <input type="text" id="taskInput" placeholder="Enter task...">
+    <button onclick="addTask()">Add Task</button>
+
+    <div id="taskList"></div>
+</div>
+
+<script>
+    function updateClock() {
+        document.getElementById("clock").innerText = new Date().toLocaleTimeString();
+        setTimeout(updateClock, 1000);
+    }
+
+    function loadTasks() {
+        document.getElementById("taskList").innerHTML = localStorage.tasks || "";
+    }
+
+    function addTask() {
+        let taskText = document.getElementById("taskInput").value.trim();
+        if (!taskText) return;
+        let task = `<div class="task">
+                        <input type="checkbox" onclick="saveTasks()">
+                        <span>${taskText}</span>
+                    </div>`;
+        document.getElementById("taskList").innerHTML += task;
+        document.getElementById("taskInput").value = "";
+        saveTasks();
+    }
+
+    function saveTasks() {
+        localStorage.tasks = document.getElementById("taskList").innerHTML;
+    }
+
+    updateClock();
+    loadTasks();
+</script>
+
+</body>
+</html>
